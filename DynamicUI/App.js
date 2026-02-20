@@ -56,7 +56,7 @@
 
 
 import {Text,View,StyleSheet,SafeAreaView,Platform} from "react-native";
-import CustomButton from "./components/CustomButtons/CustomButton";
+import CustomButton from "./components/CustomButtons";
 export default function App(){
     return (
         <SafeAreaView style={styles.safeAreaView}>

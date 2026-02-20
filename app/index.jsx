@@ -1,9 +1,13 @@
 import {View,Button,Text,ScrollView,StyleSheet,Image,Pressable,Alert,Modal,ActivityIndicator,StatusBar,Platform} from 'react-native';
 import React,{useState} from 'react';
 import {Link} from 'expo-router';
+import Forms from '../RNForms/App';
+// import CustomButton from "../DynamicUI/components/CustomButtons"
 
 
-const App=() => {
+
+
+const Index=() => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const handlePress = () => {
         if (Platform.OS === 'web') {
@@ -45,11 +49,13 @@ const App=() => {
                 </Modal>   
                 <Button title="Show Modal" onPress={()=>setIsModalVisible(true)} /> 
 
+                {/* <CustomButton/> */}
+                <Forms/>
         
         </View>
     )
 }
-export default App;
+export default Index;
 
 const styles=StyleSheet.create({
     container:{

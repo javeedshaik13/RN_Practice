@@ -1,7 +1,7 @@
 import React from "react";
 import {Text,View,StyleSheet,Pressable} from "react-native";
-const CustomButton=({onPress,title})=>{
-    <Pressable onPress={onPress}
+const CustomButton=({onPress,title="Button"})=>{
+    return <Pressable onPress={onPress}
     style={{justifyContent:"center",
         alignItems:"center",
         backgroundColor:"lightblue",
