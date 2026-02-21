@@ -6,6 +6,13 @@ const [name,setName]=useState("");
 const [password,setPassword]=useState("");
 const [isdaarkmode,setIsDarkMode]=useState(false);
 const [errors,setErrors]=useState({});
+const [postTitle,setPostTitle]=useState("");
+const [postBody,setpostBody]=useState("");
+const [postList,setPostList]=useState([]);
+const [isPosting,setIsPosting]=useState(false);
+const [error,seterror]=useState("");
+const [refreshing,setRefreshing]=useState(false);
+
 
 const validationForm=()=>{
     let errors={};
@@ -23,8 +30,63 @@ const handleSubmit=()=>{
     }else{
         console.log("form is invalid");
     }
-    return (
-        <KeyboardAvoidingView behaviour={Platform.OS==="ios"?100:0} style={styles.container}>
+}
+const fetchData = async () => {
+    // Add your data fetching logic here
+    return Promise.resolve();
+}
+
+const handleRefresh=()=>{
+    setRefreshing(true);
+    fetchData().then(()=>{
+        setRefreshing(false);
+    })
+} 
+const handlePost= async ()=>{
+setIsPosting(true);
+try{
+const response=await fetch("https://jsonplaceholder.typicode.com/posts",{
+    method:"POST",
+    headers:{
+        "Content-Type":"application/json"
+    },
+    body:JSON.stringify({
+        title:postTitle,
+        body:postBody,}),
+    });
+const newPost=await response.json();
+setPostList([...postList,newPost]);
+setPostTitle("");
+setpostBody("");
+setIsPosting(false);
+seterror("");
+}
+catch(error){
+    console.log(error);
+    setIsPosting(false);
+seterror(error.message);
+}
+}
+return (
+    <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={Platform.OS==="ios"?100:0} style={styles.container}>
+           {error?(
+            <Text style={{color:"red"}}>{error}</Text>)
+           :(
+           <>
+           <View style={styles.inputContrainer}>
+            <TextInput style={styles.input}
+            placeholder="Post title"
+            value={postTitle}
+            onChangeText={setPostTitle}
+            />
+            <TextInput style={styles.input}
+            placeholder="Post body"
+            value={postBody}
+            onChangeText={setpostBody}
+            multiline={true}
+            />
+            <Button title={isPosting?"Posting...":"Post"} onPress={handlePost} disabled={isPosting}/>
+            </View>
             <TextInput style={styles.text}
             value={name}
             onChangeText={setName}
@@ -53,7 +115,9 @@ const handleSubmit=()=>{
                 <Switch value={isdaarkmode} onValueChange={setIsDarkMode}/>
                 <Button title="submit" onPress={handleSubmit}/>
             </View>
-        </KeyboardAvoidingView>
+            </>
+           )}
+    </KeyboardAvoidingView>
     )
 }
 
@@ -88,5 +152,24 @@ const styles=StyleSheet.create({
         flexDirection:'row',
         alignItems:"center",
         marginTop:20
+    },
+    inputContrainer:{
+        width:"100%",
+        alignItems:"center",
+        borderRadius:5,
+        padding:10,
+        marginTop:20    
+    },
+    input:{
+        height:100,
+        width:"80%",
+        borderWidth:1,
+        borderColor:"black",  
+        marginBottom:10,
+        borderRadius:5,
+        padding:10,
+        marginTop:20
+      
     }
+
 })
